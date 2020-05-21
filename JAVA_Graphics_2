@@ -1,0 +1,53 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Graphics;//注意！！
+import java.awt.event.*;
+
+class MyPanel extends JPanel{
+	int x1,x2,y1,y2;
+	protected void paintComponent( Graphics g) {//不是paintComponents！别打错字！
+		super.paintComponent(g);
+		int x,y,width,height;
+		x=Integer.min(x1, x2);
+		y=Integer.min(y1, y2);
+		width=Math.abs(x1-x2);
+		height=Math.abs(y1-y2);
+		g.drawOval(x, y, width, height);
+	}
+	MyPanel(){
+		MyMouseListener m = new MyMouseListener();
+		this.addMouseListener(m);
+		this.addMouseMotionListener(m);
+	}
+	class MyMouseListener extends MouseAdapter{
+		public void mousePressed(MouseEvent e) {
+			x1=e.getX();
+			y1=e.getY();
+			//System.out.println("1");
+		}
+		public void mouseDragged(MouseEvent e){
+			x2=e.getX();
+			y2=e.getY();
+			//System.out.println("2");
+			repaint();//注意！
+		}
+		
+	}
+}
+class MyFrame extends JFrame{
+	MyFrame(String title){
+		super(title);
+		this.setBounds(200, 200, 800, 600);
+		this.setContentPane(new MyPanel());
+		//this.add(new MyPanel());
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+}
+public class t2 {
+	public static void main(String[] args) {
+		new MyFrame("T1");
+	}
+}
